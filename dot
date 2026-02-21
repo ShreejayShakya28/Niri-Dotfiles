@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+
+# set -uo pipefail but not -e: errors are handled manually via cp_file/cp_glob
+# so we get full control over pass/fail tracking without surprise exits
+set -uo pipefail
+
+# resolve real script location, symlink-safe
+# note: readlink -f is GNU coreutils only (not available on macOS without greadlink)
+REPO_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+CONFIG="$HOME/.config"
+
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+NC='\033[0m'
+
+log()  { echo -e "${BLUE}::${NC} $1"; }
+ok()   { echo -e "  ${GREEN}ok${NC} $1";   PASS=$((PASS + 1)); }
+fail() { echo -e "  ${RED}fail${NC} $1";   FAIL=$((FAIL + 1)); }
+warn() { echo -e "  ${YELLOW}warn${NC} $1"; }
+
+PASS=0
+FAIL=0
+DRY_RUN=false
+BACKUP=false
+YES=false
+
+usage() {
+  echo "usage: ./dot [options] <app|all>"
+  echo ""
+  echo "  apps: fuzzel waybar foot niri tmux"
+  echo ""
+  echo "  options:"
+  echo "    -n    dry run (print what would be copied, no changes)"
+  echo "    -b    backup existing files before overwriting (.bak)"
+  echo "    -y    skip confirmation prompt (for scripted use)"
+  exit 1
+}
+
+while getopts "nby" opt; do
+  case $opt in
+    n) DRY_RUN=true ;;
+    b) BACKUP=true  ;;
+    y) YES=true     ;;
+    *) usage        ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+[[ $# -eq 0 ]] && usage
+
+cp_file() {
+  local src="$1" dst="$2"
+
+  if [[ ! -f "$src" ]]; then
+    fail "$src (source missing)"
+    return
+  fi
+
+  local dst_dir
+  dst_dir="$(dirname "$dst")"
+  if [[ ! -d "$dst_dir" ]]; then
+    fail "$dst (destination dir $dst_dir does not exist)"
+    return
+  fi
+
+  if $DRY_RUN; then
+    warn "dry-run: $src → $dst"
+    return
+  fi
+
+  if $BACKUP && [[ -f "$dst" ]]; then
+    if ! cp -p "$dst" "${dst}.bak"; then
+      fail "could not backup $dst — skipping"
+      return
+    fi
+    warn "backed up ${dst}.bak"
+  fi
+
+  if cp -p "$src" "$dst"; then
+    ok "$(basename "$dst")"
+  else
+    fail "$(basename "$dst")"
+  fi
+}
+
+cp_glob() {
+  local pattern="$1" dst_dir="$2"
+
+  if [[ ! -d "$dst_dir" ]]; then
+    fail "$dst_dir (destination dir does not exist)"
+    return
+  fi
+
+  shopt -s nullglob
+  local files=($pattern)
+  shopt -u nullglob
+
+  if [[ ${#files[@]} -eq 0 ]]; then
+    warn "no files matched: $pattern"
+    return
+  fi
+
+  for src in "${files[@]}"; do
+    cp_file "$src" "$dst_dir/$(basename "$src")"
+  done
+}
+
+sync_fuzzel() {
+  log "syncing fuzzel"
+  cp_file "$REPO_DIR/fuzzel/fuzzel.ini" "$CONFIG/fuzzel/fuzzel.ini"
+}
+
+sync_waybar() {
+  log "syncing waybar"
+  cp_file "$REPO_DIR/waybar/config.jsonc" "$CONFIG/waybar/config.jsonc"
+  cp_file "$REPO_DIR/waybar/style.css"    "$CONFIG/waybar/style.css"
+  cp_glob "$REPO_DIR/waybar/scripts/*.sh" "$CONFIG/waybar/scripts"
+}
+
+sync_foot() {
+  log "syncing foot"
+  cp_file "$REPO_DIR/foot/foot.ini" "$CONFIG/foot/foot.ini"
+}
+
+sync_niri() {
+  log "syncing niri"
+  cp_file "$REPO_DIR/niri/config.kdl" "$CONFIG/niri/config.kdl"
+}
+
+sync_tmux() {
+  log "syncing tmux"
+  cp_file "$REPO_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+}
+
+sync_all() {
+  if ! $DRY_RUN && ! $YES; then
+    read -r -p "sync all dotfiles? this will overwrite existing configs. [y/N] " confirm
+    [[ "$confirm" =~ ^[Yy]$ ]] || { echo "aborted."; exit 0; }
+  fi
+  sync_fuzzel
+  sync_waybar
+  sync_foot
+  sync_niri
+  sync_tmux
+}
+
+case "${1}" in
+  fuzzel) sync_fuzzel ;;
+  waybar) sync_waybar ;;
+  foot)   sync_foot   ;;
+  niri)   sync_niri   ;;
+  tmux)   sync_tmux   ;;
+  all)    sync_all    ;;
+  *)      usage       ;;
+esac
+
+echo ""
+echo -e "  done — ${GREEN}${PASS} ok${NC} / ${RED}${FAIL} failed${NC}"
+[[ $FAIL -gt 0 ]] && exit 1 || exit 0
