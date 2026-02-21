@@ -14,18 +14,13 @@ Dotfiles for my [Niri](https://github.com/YaLTeR/niri) Wayland compositor setup.
 
 ## Sync Script
 
-A `dot` script at the repo root handles copying configs to their destinations.
+A `dot` script at the repo root handles syncing configs in both directions.
 
 ```bash
-# one app at a time
-./dot niri
-./dot waybar
-./dot fuzzel
-./dot foot
-./dot tmux
-
-# everything at once (prompts for confirmation)
-./dot all
+./dot push all        # deploy everything from repo → system
+./dot pull all        # harvest everything from system → repo
+./dot push waybar     # deploy one app
+./dot pull waybar     # save one app's edits back to repo
 ```
 
 ### Options
@@ -37,10 +32,28 @@ A `dot` script at the repo root handles copying configs to their destinations.
 | `-y` | Skip confirmation prompt (useful for scripting) |
 
 ```bash
-./dot -n all        # preview what sync all would do
-./dot -b waybar     # backup then sync waybar
-./dot -y all        # sync everything, no prompt
+./dot -n push all     # preview a full deploy
+./dot -n pull all     # preview what pull would collect
+./dot -b push waybar  # backup then deploy waybar
+./dot -y push all     # deploy everything, no prompt
 ```
+
+### Workflow
+
+**New machine / fresh install:**
+```bash
+./dot push all
+```
+
+**After editing a live config:**
+```bash
+# edit ~/.config/waybar/config.jsonc directly, then save it back
+./dot pull waybar
+git add -p && git commit
+```
+
+> **Note:** `pull` on waybar scripts harvests **all** `.sh` files from the system,
+> including any added locally. Run `git diff` before committing to review what changed.
 
 ## Structure
 
