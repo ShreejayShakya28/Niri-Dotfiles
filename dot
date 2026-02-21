@@ -27,14 +27,25 @@ BACKUP=false
 YES=false
 
 usage() {
-  echo "usage: ./dot [options] <app|all>"
+  echo "usage: ./dot [options] <push|pull> <app|all>"
+  echo ""
+  echo "  push  deploy from repo → ~/.config  (install)"
+  echo "  pull  harvest from ~/.config → repo  (save)"
   echo ""
   echo "  apps: fuzzel waybar foot niri tmux"
   echo ""
   echo "  options:"
   echo "    -n    dry run (print what would be copied, no changes)"
   echo "    -b    backup existing files before overwriting (.bak)"
+  echo "          note: on pull, this backs up repo files not system files"
+  echo "                git is your real backup for repo files"
   echo "    -y    skip confirmation prompt (for scripted use)"
+  echo ""
+  echo "  examples:"
+  echo "    ./dot push all        deploy everything to system"
+  echo "    ./dot pull waybar     save waybar edits back to repo"
+  echo "    ./dot -n pull all     preview what pull would collect"
+  echo "    ./dot -y push all     deploy without prompt"
   exit 1
 }
 
@@ -48,7 +59,12 @@ while getopts "nby" opt; do
 done
 shift $((OPTIND - 1))
 
-[[ $# -eq 0 ]] && usage
+[[ $# -lt 2 ]] && usage
+
+DIRECTION="${1}"
+APP="${2}"
+
+[[ "$DIRECTION" != "push" && "$DIRECTION" != "pull" ]] && usage
 
 cp_file() {
   local src="$1" dst="$2"
@@ -107,54 +123,102 @@ cp_glob() {
   done
 }
 
-sync_fuzzel() {
-  log "syncing fuzzel"
+# --- push: repo → system ---
+
+push_fuzzel() {
+  log "push fuzzel"
   cp_file "$REPO_DIR/fuzzel/fuzzel.ini" "$CONFIG/fuzzel/fuzzel.ini"
 }
 
-sync_waybar() {
-  log "syncing waybar"
+push_waybar() {
+  log "push waybar"
   cp_file "$REPO_DIR/waybar/config.jsonc" "$CONFIG/waybar/config.jsonc"
   cp_file "$REPO_DIR/waybar/style.css"    "$CONFIG/waybar/style.css"
+  # note: push only deploys scripts tracked in the repo
   cp_glob "$REPO_DIR/waybar/scripts/*.sh" "$CONFIG/waybar/scripts"
 }
 
-sync_foot() {
-  log "syncing foot"
+push_foot() {
+  log "push foot"
   cp_file "$REPO_DIR/foot/foot.ini" "$CONFIG/foot/foot.ini"
 }
 
-sync_niri() {
-  log "syncing niri"
+push_niri() {
+  log "push niri"
   cp_file "$REPO_DIR/niri/config.kdl" "$CONFIG/niri/config.kdl"
 }
 
-sync_tmux() {
-  log "syncing tmux"
+push_tmux() {
+  log "push tmux"
   cp_file "$REPO_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 }
 
-sync_all() {
-  if ! $DRY_RUN && ! $YES; then
-    read -r -p "sync all dotfiles? this will overwrite existing configs. [y/N] " confirm
-    [[ "$confirm" =~ ^[Yy]$ ]] || { echo "aborted."; exit 0; }
-  fi
-  sync_fuzzel
-  sync_waybar
-  sync_foot
-  sync_niri
-  sync_tmux
+# --- pull: system → repo ---
+
+pull_fuzzel() {
+  log "pull fuzzel"
+  cp_file "$CONFIG/fuzzel/fuzzel.ini" "$REPO_DIR/fuzzel/fuzzel.ini"
 }
 
-case "${1}" in
-  fuzzel) sync_fuzzel ;;
-  waybar) sync_waybar ;;
-  foot)   sync_foot   ;;
-  niri)   sync_niri   ;;
-  tmux)   sync_tmux   ;;
-  all)    sync_all    ;;
-  *)      usage       ;;
-esac
+pull_waybar() {
+  log "pull waybar"
+  cp_file "$CONFIG/waybar/config.jsonc" "$REPO_DIR/waybar/config.jsonc"
+  cp_file "$CONFIG/waybar/style.css"    "$REPO_DIR/waybar/style.css"
+  # note: pull harvests ALL .sh scripts from system — including any added locally
+  # review with git diff before committing to avoid importing unintended scripts
+  cp_glob "$CONFIG/waybar/scripts/*.sh" "$REPO_DIR/waybar/scripts"
+}
+
+pull_foot() {
+  log "pull foot"
+  cp_file "$CONFIG/foot/foot.ini" "$REPO_DIR/foot/foot.ini"
+}
+
+pull_niri() {
+  log "pull niri"
+  cp_file "$CONFIG/niri/config.kdl" "$REPO_DIR/niri/config.kdl"
+}
+
+pull_tmux() {
+  log "pull tmux"
+  cp_file "$HOME/.tmux.conf" "$REPO_DIR/tmux/tmux.conf"
+}
+
+# --- dispatch ---
+
+run_app() {
+  local dir="$1" app="$2"
+
+  # self-validate direction so this function is safe regardless of how it's called
+  [[ "$dir" == "push" || "$dir" == "pull" ]] || { fail "invalid direction: $dir"; exit 1; }
+
+  # warn if -b is used on pull — git is the real backup for repo files
+  if $BACKUP && [[ "$dir" == "pull" ]]; then
+    warn "-b on pull backs up repo files, not system files — git is your real backup here"
+  fi
+
+  case "$app" in
+    fuzzel) ${dir}_fuzzel ;;
+    waybar) ${dir}_waybar ;;
+    foot)   ${dir}_foot   ;;
+    niri)   ${dir}_niri   ;;
+    tmux)   ${dir}_tmux   ;;
+    all)
+      if ! $DRY_RUN && ! $YES; then
+        read -r -p "${dir} all dotfiles? [y/N] " confirm
+        [[ "$confirm" =~ ^[Yy]$ ]] || { echo "aborted."; exit 0; }
+      fi
+      ${dir}_fuzzel
+      ${dir}_waybar
+      ${dir}_foot
+      ${dir}_niri
+      ${dir}_tmux
+      ;;
+    *) usage ;;
+  esac
+}
+
+run_app "$DIRECTION" "$APP"
 
 echo ""
 echo -e "  done — ${GREEN}${PASS} ok${NC} / ${RED}${FAIL} failed${NC}"
