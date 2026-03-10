@@ -7,8 +7,8 @@
 set -euo pipefail
 
 # Get wifi info from nmcli
-wifi_info=$(nmcli -t -f active,ssid,signal dev wifi \
-  | awk -F: '$1=="yes"{print $2"|"$3}' | head -1 || true)
+wifi_info=$(nmcli -t -f active,ssid,signal dev wifi |
+  awk -F: '$1=="yes"{print $2"|"$3}' | head -1 || true)
 
 if [[ -z "$wifi_info" ]]; then
   # Not connected
@@ -20,11 +20,15 @@ ssid="${wifi_info%%|*}"
 signal="${wifi_info##*|}"
 
 # Pick icon based on signal strength
-if   [[ "$signal" -ge 75 ]]; then icon="󰤨"
-elif [[ "$signal" -ge 50 ]]; then icon="󰤥"
-elif [[ "$signal" -ge 25 ]]; then icon="󰤢"
-else                               icon="󰤟"
+if [[ "$signal" -ge 75 ]]; then
+  icon="󰤨"
+elif [[ "$signal" -ge 50 ]]; then
+  icon="󰤥"
+elif [[ "$signal" -ge 25 ]]; then
+  icon="󰤢"
+else
+  icon="󰤟"
 fi
 
-printf '{"text": "%s", "tooltip": "%s  %d%%", "class": "connected"}\n' \
-  "$icon" "$ssid" "$signal"
+printf '{"text": "%s %s", "tooltip": "%s  %d%%", "class": "connected"}\n' \
+  "$icon" "$ssid" "$ssid" "$signal"

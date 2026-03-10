@@ -1,83 +1,83 @@
 // Waybar Configuration for Niri
 // Font: JetBrainsMono Nerd Font (installed at ~/.local/share/fonts/JetBrainsMono)
 {
-    "layer": "top",
-    "position": "top",
-    "spacing": 0,
-    "height": 34,
-    "modules-left": [
-        "clock"
-    ],
-    "modules-center": [
-        "niri/workspaces"
-    ],
-    "modules-right": [
-        "tray",
-        "memory",
-        "custom/wifi",
-        "custom/bluetooth",
-        "wireplumber",
-        "battery",
-        "custom/power"
-    ],
-    "niri/workspaces": {
-        "format": "{icon}",
-        "format-icons": {
-            "default": "○",
-            "active": "●"
-        }
-    },
-    "memory": {
-        "interval": 5,
-        "format": "󰍛 {}%",
-        "max-length": 10,
-        "tooltip": false
-    },
-    "tray": {
-        "spacing": 10
-    },
-    "clock": {
-        "tooltip": false,
-        "format": "󰃰 {:%a, %d %b   %I:%M %p}"
-    },
-    "custom/wifi": {
-        "format": "{}",
-        "return-type": "json",
-        "exec": "~/.config/waybar/scripts/wifi-status.sh",
-        "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
-        "interval": 5,
-        "tooltip": true
-    },
-    "custom/bluetooth": {
-        "format": "{}",
-        "return-type": "json",
-        "exec": "~/.config/waybar/scripts/bluetooth-status.sh",
-        "on-click": "~/.config/waybar/scripts/bluetooth-menu.sh",
-        "tooltip": false
-    },
-    "wireplumber": {
-        "format": "󰕾 {volume}%",
-        "format-muted": "󰝟 Muted",
-        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-        "on-click-right": "~/.config/waybar/scripts/audio-output-menu.sh",
-        "scroll-step": 1,
-        "tooltip": false
-    },
-    "battery": {
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-full": "󰁹 Full",
-        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "interval": 5,
-        "states": {
-            "warning": 20,
-            "critical": 10
-        },
-        "tooltip": false
-    },
-    "custom/power": {
-        "format": "󰐥",
-        "tooltip": false,
-        "on-click": "~/.config/waybar/scripts/power-menu.sh"
+  "layer": "top",
+  "position": "top",
+  "spacing": 0,
+  "height": 34,
+  "modules-left": [
+    "clock"
+  ],
+  "modules-center": [
+    "niri/workspaces"
+  ],
+  "modules-right": [
+    "tray",
+    "memory",
+    "custom/wifi",
+    "wireplumber",
+    "custom/bluetooth",
+    "battery",
+    "custom/power"
+  ],
+  "niri/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "default": "○",
+      "active": "●"
     }
+  },
+  "memory": {
+    "interval": 5,
+    "format": "󰍛 {}%",
+    "max-length": 10,
+    "tooltip": false
+  },
+  "tray": {
+    "spacing": 10
+  },
+  "clock": {
+    "tooltip": false,
+    "format": "󰃰 {:%a, %d %b   %I:%M %p}"
+  },
+  "custom/wifi": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/wifi-status.sh",
+    "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
+    "interval": 5,
+    "tooltip": true
+  },
+  "custom/bluetooth": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/bluetooth-status.sh",
+    "on-click": "~/.config/waybar/scripts/bluetooth-menu.sh",
+    "tooltip": false
+  },
+  "wireplumber": {
+    "format": "󰕾 {volume}%",
+    "format-muted": "󰝟 Muted",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-click-right": "~/.config/waybar/scripts/audio-output-menu.sh",
+    "scroll-step": 1,
+    "tooltip": false
+  },
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-full": "󰁹 Full",
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "interval": 5,
+    "states": {
+      "warning": 20,
+      "critical": 10
+    },
+    "tooltip": false
+  },
+  "custom/power": {
+    "format": "󰐥",
+    "tooltip": false,
+    "on-click": "~/.config/waybar/scripts/power-menu.sh"
+  }
 }
