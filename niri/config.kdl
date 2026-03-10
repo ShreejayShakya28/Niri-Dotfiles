@@ -82,11 +82,19 @@ output "eDP-1" {
     position x=0 y=0
 }
 
-output "HDMI-1" {
-    // External Samsung monitor
-    mode "1360x768@60.015" 
-    scale 1.0
-    position x=1280 y=0
+// Samsung External Monitor
+// output "HDMI-1" {
+//     // External Samsung monitor
+//     mode "1360x768@60.015" 
+//     scale 1.0
+//     position x=1280 y=0
+// }
+
+// BenQ Monitor Config 
+output "HDMI-A-1" {
+    mode "1920x1080@100.000"
+    scale 1.25
+    transform "normal"
 }
 
 // Settings that influence how windows are positioned and sized.
