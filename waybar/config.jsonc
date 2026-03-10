@@ -14,7 +14,7 @@
     "modules-right": [
         "tray",
         "memory",
-        "network",
+        "custom/wifi",
         "custom/bluetooth",
         "wireplumber",
         "battery",
@@ -40,15 +40,13 @@
         "tooltip": false,
         "format": "󰃰 {:%a, %d %b   %I:%M %p}"
     },
-    "network": {
-        "format-wifi": "󰤨 {essid}",
-        "format-ethernet": "󰈀 {ifname}",
-        "format-disconnected": "󰤭 No Network",
-        "tooltip-format-wifi": "Signal: {signalStrength}%\nDown: {bandwidthDownBytes}  Up: {bandwidthUpBytes}",
-        "tooltip-format-ethernet": "{ifname}\nDown: {bandwidthDownBytes}  Up: {bandwidthUpBytes}",
-        "on-click": "nm-connection-editor",
+    "custom/wifi": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/wifi-status.sh",
+        "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
         "interval": 5,
-        "max-length": 25
+        "tooltip": true
     },
     "custom/bluetooth": {
         "format": "{}",
