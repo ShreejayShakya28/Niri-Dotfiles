@@ -1,4 +1,5 @@
 // Waybar Configuration for Niri
+// Font: JetBrainsMono Nerd Font (installed at ~/.local/share/fonts/JetBrainsMono)
 {
     "layer": "top",
     "position": "top",
@@ -28,21 +29,21 @@
     },
     "memory": {
         "interval": 5,
-        "format": "MEM: {}%",
-        "max-length": 15
+        "format": "󰍛 {}%",
+        "max-length": 10,
+        "tooltip": false
     },
     "tray": {
         "spacing": 10
     },
     "clock": {
-        "tooltip-format": "{calendar}",
-        "format-alt": "{:%a, %d %b %Y}",
-        "format": "{:%I:%M %p}"
+        "tooltip": false,
+        "format": "󰃰 {:%a, %d %b   %I:%M %p}"
     },
     "network": {
-        "format-wifi": "{essid}",
-        "format-ethernet": "{ifname}",
-        "format-disconnected": "Disconnected",
+        "format-wifi": "󰤨 {essid}",
+        "format-ethernet": "󰈀 {ifname}",
+        "format-disconnected": "󰤭 No Network",
         "tooltip-format-wifi": "Signal: {signalStrength}%\nDown: {bandwidthDownBytes}  Up: {bandwidthUpBytes}",
         "tooltip-format-ethernet": "{ifname}\nDown: {bandwidthDownBytes}  Up: {bandwidthUpBytes}",
         "on-click": "nm-connection-editor",
@@ -57,16 +58,18 @@
         "tooltip": false
     },
     "wireplumber": {
-        "format": "VOL: {volume}%",
-        "format-muted": "MUTED",
+        "format": "󰕾 {volume}%",
+        "format-muted": "󰝟 Muted",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
         "on-click-right": "~/.config/waybar/scripts/audio-output-menu.sh",
-        "scroll-step": 1
+        "scroll-step": 1,
+        "tooltip": false
     },
     "battery": {
-        "format": "{capacity}%",
-        "format-charging": "{capacity}% ⚡",
-        "format-full": "100%",
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-full": "󰁹 Full",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "interval": 5,
         "states": {
             "warning": 20,
@@ -75,7 +78,7 @@
         "tooltip": false
     },
     "custom/power": {
-        "format": "POWER",
+        "format": "󰐥",
         "tooltip": false,
         "on-click": "~/.config/waybar/scripts/power-menu.sh"
     }
