@@ -101,3 +101,7 @@ window#waybar {
 #custom-mic.active {
     color: #cba6f7;
 }
+
+#custom-mpris.playing { color: #cdd6f4; }
+#custom-mpris.paused  { color: #585b70; }
+#custom-mpris.inactive {}
