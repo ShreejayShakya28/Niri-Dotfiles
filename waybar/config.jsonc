@@ -16,6 +16,7 @@
     "memory",
     "custom/wifi",
     "wireplumber",
+    "custom/mic",
     "custom/bluetooth",
     "battery",
     "custom/power"
@@ -79,5 +80,14 @@
     "format": "󰐥",
     "tooltip": false,
     "on-click": "~/.config/waybar/scripts/power-menu.sh"
+  },
+  "custom/mic": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/mic-status.sh",
+    "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+    "on-click-right": "~/.config/waybar/scripts/audio-input-menu.sh",
+    "interval": 2,
+    "tooltip": true
   }
 }

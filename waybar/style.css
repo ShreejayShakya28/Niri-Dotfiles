@@ -90,3 +90,14 @@ window#waybar {
     color: #f38ba8;
     padding-right: 14px;
 }
+
+#custom-mic {
+    padding: 0 10px;
+    color: #cba6f7;
+}
+#custom-mic.muted {
+    color: #6c7086;
+}
+#custom-mic.active {
+    color: #cba6f7;
+}

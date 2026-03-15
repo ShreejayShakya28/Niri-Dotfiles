@@ -269,7 +269,6 @@ hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
     skip-at-startup
 }
-
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
 // Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
@@ -389,6 +388,7 @@ binds {
     // You can also move the mouse into the top-left hot corner,
     // or do a four-finger swipe up on a touchpad.
     Mod+O repeat=false { toggle-overview; }
+    Mod+Shift+O repeat=false { spawn "sh" "-c" "pgrep waybar > /dev/null && pkill waybar || waybar & niri msg action toggle-overview"; }
 
     Mod+Q repeat=false { close-window; }
 
