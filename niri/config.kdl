@@ -618,4 +618,5 @@ binds {
     
     // Clipboard in fuzzel menu using cliphist & wl-copy
     Mod+Backslash { spawn "sh" "-c" "cliphist list | fuzzel --dmenu --width 100 | cliphist decode | wl-copy"; }
+    Mod+Shift+S { spawn "bash" "-c" "~/.config/waybar/scripts/mpris-toggle.sh"; }
 }
