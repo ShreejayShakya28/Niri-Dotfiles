@@ -108,6 +108,13 @@
 "notebook.lineNumbers": "on",
 "github.copilot.chat.anthropic.tools.websearch.enabled": true,
 "github.copilot.nextEditSuggestions.enabled": false,
-"chat.viewSessions.orientation": "stacked"
+"chat.viewSessions.orientation": "stacked",
+"github.copilot.enable": {
+  "*": false,
+  "plaintext": false,
+  "markdown": false,
+  "scminput": false,
+  "astro": false
+}
 }
 

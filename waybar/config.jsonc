@@ -18,7 +18,6 @@
     "custom/wifi",
     "wireplumber",
     "custom/mic",
-    "custom/bluetooth",
     "battery",
     "custom/power"
   ],
@@ -40,7 +39,9 @@
   },
   "clock": {
     "tooltip": false,
-    "format": "󰃰 {:%a, %d %b   %I:%M %p}"
+    "format": "{:%I:%M %p}",
+    "format-alt": "{:%a, %d %b}",
+    "on-click": "mode"
   },
   "custom/wifi": {
     "format": "{}",
@@ -49,13 +50,6 @@
     "on-click": "~/.config/waybar/scripts/wifi-menu.sh",
     "interval": 5,
     "tooltip": true
-  },
-  "custom/bluetooth": {
-    "format": "{}",
-    "return-type": "json",
-    "exec": "~/.config/waybar/scripts/bluetooth-status.sh",
-    "on-click": "~/.config/waybar/scripts/bluetooth-menu.sh",
-    "tooltip": false
   },
   "wireplumber": {
     "format": "󰕾 {volume}%",
