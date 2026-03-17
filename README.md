@@ -231,3 +231,11 @@ listing any missing commands if they are not found.
 | `mpris-click.sh` | `playerctl`, `zenity`, `mpv` |
 | `mpris-pick.sh` | `playerctl`, `zenity`, `mpv` |
 | `mpris-toggle.sh` | `playerctl`, `zenity`, `mpv` |
+
+
+### VSCODE
+
+Install extensions from extension list.
+```
+cat ~/Dotfiles/vscode/extensions.txt | xargs -L 1 code --install-extension
+```
