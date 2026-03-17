@@ -15,9 +15,15 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
 
-log()  { echo -e "${BLUE}::${NC} $1"; }
-ok()   { echo -e "  ${GREEN}ok${NC} $1";   PASS=$((PASS + 1)); }
-fail() { echo -e "  ${RED}fail${NC} $1";   FAIL=$((FAIL + 1)); }
+log() { echo -e "${BLUE}::${NC} $1"; }
+ok() {
+  echo -e "  ${GREEN}ok${NC} $1"
+  PASS=$((PASS + 1))
+}
+fail() {
+  echo -e "  ${RED}fail${NC} $1"
+  FAIL=$((FAIL + 1))
+}
 warn() { echo -e "  ${YELLOW}warn${NC} $1"; }
 
 PASS=0
@@ -32,7 +38,7 @@ usage() {
   echo "  push  deploy from repo → ~/.config  (install)"
   echo "  pull  harvest from ~/.config → repo  (save)"
   echo ""
-  echo "  apps: fuzzel waybar foot niri tmux"
+  echo "  apps: fuzzel waybar foot niri tmux vscode"
   echo ""
   echo "  options:"
   echo "    -n    dry run (print what would be copied, no changes)"
@@ -51,10 +57,10 @@ usage() {
 
 while getopts "nby" opt; do
   case $opt in
-    n) DRY_RUN=true ;;
-    b) BACKUP=true  ;;
-    y) YES=true     ;;
-    *) usage        ;;
+  n) DRY_RUN=true ;;
+  b) BACKUP=true ;;
+  y) YES=true ;;
+  *) usage ;;
   esac
 done
 shift $((OPTIND - 1))
@@ -133,7 +139,7 @@ push_fuzzel() {
 push_waybar() {
   log "push waybar"
   cp_file "$REPO_DIR/waybar/config.jsonc" "$CONFIG/waybar/config.jsonc"
-  cp_file "$REPO_DIR/waybar/style.css"    "$CONFIG/waybar/style.css"
+  cp_file "$REPO_DIR/waybar/style.css" "$CONFIG/waybar/style.css"
   # note: push only deploys scripts tracked in the repo
   cp_glob "$REPO_DIR/waybar/scripts/*.sh" "$CONFIG/waybar/scripts"
 }
@@ -153,6 +159,14 @@ push_tmux() {
   cp_file "$REPO_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 }
 
+push_vscode() {
+  log "push vscode"
+  cp_file "$REPO_DIR/vscode/settings.json" "$CONFIG/Code/User/settings.json"
+  cp_file "$REPO_DIR/vscode/keybindings.json" "$CONFIG/Code/User/keybindings.json"
+  cp_file "$REPO_DIR/vscode/mcp.json" "$CONFIG/Code/User/mcp.json"
+  cp_glob "$REPO_DIR/vscode/snippets/*" "$CONFIG/Code/User/snippets"
+}
+
 # --- pull: system → repo ---
 
 pull_fuzzel() {
@@ -163,7 +177,7 @@ pull_fuzzel() {
 pull_waybar() {
   log "pull waybar"
   cp_file "$CONFIG/waybar/config.jsonc" "$REPO_DIR/waybar/config.jsonc"
-  cp_file "$CONFIG/waybar/style.css"    "$REPO_DIR/waybar/style.css"
+  cp_file "$CONFIG/waybar/style.css" "$REPO_DIR/waybar/style.css"
   # note: pull harvests ALL .sh scripts from system — including any added locally
   # review with git diff before committing to avoid importing unintended scripts
   cp_glob "$CONFIG/waybar/scripts/*.sh" "$REPO_DIR/waybar/scripts"
@@ -184,13 +198,23 @@ pull_tmux() {
   cp_file "$HOME/.tmux.conf" "$REPO_DIR/tmux/tmux.conf"
 }
 
+pull_vscode() {
+  log "pull vscode"
+  cp_file "$CONFIG/Code/User/settings.json" "$REPO_DIR/vscode/settings.json"
+  cp_file "$CONFIG/Code/User/keybindings.json" "$REPO_DIR/vscode/keybindings.json"
+  cp_file "$CONFIG/Code/User/mcp.json" "$REPO_DIR/vscode/mcp.json"
+  cp_glob "$CONFIG/Code/User/snippets/*" "$REPO_DIR/vscode/snippets"
+}
 # --- dispatch ---
 
 run_app() {
   local dir="$1" app="$2"
 
   # self-validate direction so this function is safe regardless of how it's called
-  [[ "$dir" == "push" || "$dir" == "pull" ]] || { fail "invalid direction: $dir"; exit 1; }
+  [[ "$dir" == "push" || "$dir" == "pull" ]] || {
+    fail "invalid direction: $dir"
+    exit 1
+  }
 
   # warn if -b is used on pull — git is the real backup for repo files
   if $BACKUP && [[ "$dir" == "pull" ]]; then
@@ -198,23 +222,28 @@ run_app() {
   fi
 
   case "$app" in
-    fuzzel) ${dir}_fuzzel ;;
-    waybar) ${dir}_waybar ;;
-    foot)   ${dir}_foot   ;;
-    niri)   ${dir}_niri   ;;
-    tmux)   ${dir}_tmux   ;;
-    all)
-      if ! $DRY_RUN && ! $YES; then
-        read -r -p "${dir} all dotfiles? [y/N] " confirm
-        [[ "$confirm" =~ ^[Yy]$ ]] || { echo "aborted."; exit 0; }
-      fi
-      ${dir}_fuzzel
-      ${dir}_waybar
-      ${dir}_foot
-      ${dir}_niri
-      ${dir}_tmux
-      ;;
-    *) usage ;;
+  fuzzel) ${dir}_fuzzel ;;
+  waybar) ${dir}_waybar ;;
+  foot) ${dir}_foot ;;
+  niri) ${dir}_niri ;;
+  tmux) ${dir}_tmux ;;
+  vscode) ${dir}_vscode ;;
+  all)
+    if ! $DRY_RUN && ! $YES; then
+      read -r -p "${dir} all dotfiles? [y/N] " confirm
+      [[ "$confirm" =~ ^[Yy]$ ]] || {
+        echo "aborted."
+        exit 0
+      }
+    fi
+    ${dir}_fuzzel
+    ${dir}_waybar
+    ${dir}_foot
+    ${dir}_niri
+    ${dir}_tmux
+    ${dir}_vscode
+    ;;
+  *) usage ;;
   esac
 }
 

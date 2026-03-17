@@ -1,0 +1,131 @@
+[
+  // * For Explorer Toggle Visibility
+  {
+    "key": "ctrl+shift+e",
+    "command": "workbench.view.explorer",
+    "when": "!explorerViewletVisible"
+  },
+  {
+    "key": "ctrl+shift+e",
+    "command": "workbench.action.closeSidebar",
+    "when": "explorerViewletVisible"
+  },
+
+  // * Search toggle
+  {
+    "key": "ctrl+shift+f",
+    "command": "workbench.view.search",
+    "when": "!searchViewletVisible"
+  },
+  {
+    "key": "ctrl+shift+f",
+    "command": "workbench.action.closeSidebar",
+    "when": "searchViewletVisible"
+  },
+
+  // * Extensions toggle
+  {
+    "key": "ctrl+shift+x",
+    "command": "workbench.extensions.action.showExtensions"
+  },
+
+  // * Open Source Control if sidebar is closed or another viewlet is active
+  {
+    "key": "ctrl+shift+g",
+    "command": "workbench.view.scm",
+    "when": "sideBarVisible == false || activeViewlet != 'workbench.view.scm'"
+  },
+  // Close Source Control if it’s the active viewlet
+  {
+    "key": "ctrl+shift+g",
+    "command": "workbench.action.closeSidebar",
+    "when": "activeViewlet == 'workbench.view.scm'"
+  },
+
+  {
+    "key": "ctrl+alt+t",
+    "command": "workbench.action.terminal.toggleTerminal",
+    "when": "terminal.active"
+  },
+  {
+    "key": "ctrl+shift+w",
+    "command": "workbench.action.toggleActivityBarVisibility"
+  },
+  {
+    "key": "ctrl+shift+s",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+
+  // * Here Below Dont Touch Not Recommended
+  {
+    "key": "ctrl+b",
+    "command": "-extension.vim_ctrl+b",
+    "when": "editorTextFocus && vim.active && vim.use<C-b> && !inDebugRepl && vim.mode != 'Insert'"
+  },
+  {
+    "key": "ctrl+o",
+    "command": "workbench.action.navigateBack",
+    "when": "canNavigateBack"
+  },
+  {
+    "key": "ctrl+alt+-",
+    "command": "-workbench.action.navigateBack",
+    "when": "canNavigateBack"
+  },
+  {
+    "key": "ctrl+o",
+    "command": "-workbench.action.files.openFile",
+    "when": "true"
+  },
+
+  // * for ctrl i to return which i dont even use :(
+  {
+    "key": "ctrl+i",
+    "command": "-workbench.action.chat.startVoiceChat",
+    "when": "chatIsEnabled && hasSpeechProvider && inChatInput && !chatSessionRequestInProgress && !editorFocus && !notebookEditorFocused && !scopedVoiceChatGettingReady && !speechToTextInProgress || chatIsEnabled && hasSpeechProvider && inlineChatFocused && !chatSessionRequestInProgress && !editorFocus && !notebookEditorFocused && !scopedVoiceChatGettingReady && !speechToTextInProgress"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "-workbench.action.chat.stopListeningAndSubmit",
+    "when": "inChatInput && voiceChatInProgress && scopedVoiceChatInProgress == 'editor' || inChatInput && voiceChatInProgress && scopedVoiceChatInProgress == 'inline' || inChatInput && voiceChatInProgress && scopedVoiceChatInProgress == 'quick' || inChatInput && voiceChatInProgress && scopedVoiceChatInProgress == 'view' || inlineChatFocused && voiceChatInProgress && scopedVoiceChatInProgress == 'editor' || inlineChatFocused && voiceChatInProgress && scopedVoiceChatInProgress == 'inline' || inlineChatFocused && voiceChatInProgress && scopedVoiceChatInProgress == 'quick' || inlineChatFocused && voiceChatInProgress && scopedVoiceChatInProgress == 'view'"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "-inlineChat.start",
+    "when": "editorFocus && inlineChatHasEditsAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor != 'workbench.editor.notebook' || editorFocus && inlineChatHasNotebookAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor == 'workbench.editor.notebook' || editorFocus && inlineChatHasNotebookInline && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor == 'workbench.editor.notebook' || editorFocus && inlineChatHasProvider && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor != 'workbench.editor.notebook'"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "-settings.action.toggleAiSearch",
+    "when": "aiSettingResultsAvailable && inSettingsEditor"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "-search.action.searchWithAI",
+    "when": "hasAIResultProviderKey && searchViewletFocus"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "-workbench.action.terminal.chat.start",
+    "when": "chatIsEnabled && terminalChatAgentRegistered && terminalFocusInAny && terminalHasBeenCreated || chatIsEnabled && terminalChatAgentRegistered && terminalFocusInAny && terminalProcessSupported"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "-editor.action.triggerSuggest",
+    "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly && !suggestWidgetVisible"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "-inlineChat.holdForSpeech",
+    "when": "hasSpeechProvider && inlineChatVisible && textInputFocus"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "workbench.action.navigateForwardInEditLocations"
+  },
+  {
+    "key": "ctrl+shift+d",
+    "command": "-workbench.view.debug",
+    "when": "viewContainer.workbench.view.debug.enabled"
+  }
+]
