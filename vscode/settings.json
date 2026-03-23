@@ -1,120 +1,88 @@
 {
-    "workbench.colorTheme": "Bearded Theme HC Midnight Void",
-    "workbench.startupEditor": "none",
-    "liveServer.settings.donotShowInfoMsg": true,
-    "explorer.confirmDelete": false,
-    "liveServer.settings.donotVerifyTags": true,
-    "notebook.cellToolbarLocation": {
-        "default": "right",
-        "jupyter-notebook": "left"
+  "workbench.colorTheme": "Bearded Theme HC Midnight Void",
+  "workbench.startupEditor": "none",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "explorer.confirmDelete": false,
+  "liveServer.settings.donotVerifyTags": true,
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left",
+  },
+  "editor.lineNumbers": "relative",
+  "editor.fontFamily": "DejaVu Sans Mono, Fira Code, JetBrains Mono, Cascadia Code, monospace",
+  "editor.fontSize": 16,
+  "editor.fontWeight": 500,
+  "editor.lineHeight": 1.5,
+  "editor.letterSpacing": 0.5,
+  "editor.wordWrap": "on",
+  "editor.cursorStyle": "line-thin",
+  "editor.renderWhitespace": "all",
+  "editor.occurrencesHighlight": "off",
+  "zenMode.hideLineNumbers": false,
+  "vim.useSystemClipboard": true,
+  "window.zoomLevel": 0.25,
+  "window.titleBarStyle": "custom",
+  "editor.minimap.enabled": false,
+  "editor.stickyScroll.enabled": false,
+  "window.customTitleBarVisibility": "auto",
+  "workbench.navigationControl.enabled": false,
+  "vim.useCtrlKeys": false,
+  "vim.insertModeKeyBindings": [
+    {
+      "before": ["j", "k"],
+      "after": ["<Esc>"],
     },
-    "editor.lineNumbers": "relative",
-    "editor.fontFamily": "DejaVu Sans Mono, Fira Code, JetBrains Mono, Cascadia Code, monospace",
-    "editor.fontSize": 16,
-    "editor.fontWeight": 500,
-    "editor.lineHeight": 1.5,
-    "editor.letterSpacing": 0.5,
-    "editor.wordWrap": "on",
-    "editor.cursorStyle": "line-thin",
-    "editor.renderWhitespace": "all",
-    "editor.occurrencesHighlight": "off",
-    "editor.tokenColorCustomizations": {},
-    "zenMode.hideLineNumbers": false,
-    "vim.useSystemClipboard": true,
-    "window.zoomLevel": 0.25,
-    "window.titleBarStyle": "custom",
-    "editor.minimap.enabled": false,
-    "editor.stickyScroll.enabled": false,
-    "window.customTitleBarVisibility": "auto",
-    "workbench.navigationControl.enabled": false,
-    "vim.useCtrlKeys": false,
-    "vim.insertModeKeyBindings": [
-    {
-    "before": ["j", "k"],
-    "after": ["<Esc>"]
-    }
-    ],
-    "vim.leader": "<space>",
-"files.autoSave": "afterDelay",
-"workbench.secondarySideBar.defaultVisibility": "hidden",
-"workbench.editor.empty.hint": "hidden",
-"workbench.iconTheme": "material-icon-theme",
-"explorer.confirmDragAndDrop": false,
-"workbench.sideBar.location": "right",
-"editor.tabSize": 2,
-"chat.commandCenter.enabled": false,
-"editor.gotoLocation.multipleDefinitions": "goto",
-"latex-workshop.latex.autoBuild.run": "onSave",
-"latex-workshop.view.pdf.viewer": "tab",
-"latex-workshop.latex.outDir": "out",
-// "latex-workshop.latex.clean.enabled": true,
-// "latex-workshop.chktex.enabled": true,
-// "latex-workshop.chktex.run": "onSave",
-// "latex-workshop.chktex.delay": 300,
-// "latex-workshop.chktex.additionalArgs": [
-//     "-q",
-//     "-n22",
-//     "-n30"
-//   ],
-"latex-workshop.latex.recipes": [
-    {
-      "name": "latexmk (pdf)",
-      "tools": ["latexmk"]
-    }
   ],
-  "latex-workshop.latex.tools": [
-    {
-      "name": "latexmk",
-      "command": "latexmk",
-      "args": [
-        "-pdf",
-        "-interaction=nonstopmode",
-        "-synctex=1",
-        "-outdir=out",
-        "%DOC%"
-      ]
-    }
-  ],
+  "vim.leader": "<space>",
+  "files.autoSave": "afterDelay",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "workbench.editor.empty.hint": "hidden",
+  "workbench.iconTheme": "material-icon-theme",
+  "explorer.confirmDragAndDrop": false,
+  "workbench.sideBar.location": "right",
+  "editor.tabSize": 2,
+  "chat.commandCenter.enabled": false,
+  "editor.gotoLocation.multipleDefinitions": "goto",
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "workbench.editor.enablePreview": false,
-  "typescript.updateImportsOnFileMove.enabled": "always",
+  "js/ts.updateImportsOnFileMove.enabled": "always",
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "editor.gotoLocation.multipleDeclarations": "goto",
-  
-  // * for toggling sidebar options
-    "multiCommand.commands": [
-    {
-        "command": "multiCommand.toggleExplorer",
-        "sequence": [
-            {
-                "command": "workbench.view.explorer",
-                "args": {
-                    "toggle": true
-                }
-            }
-        ]
-    }
-],
-"notebook.lineNumbers": "on",
-"github.copilot.chat.anthropic.tools.websearch.enabled": true,
-"github.copilot.nextEditSuggestions.enabled": false,
-"chat.viewSessions.orientation": "stacked",
-"github.copilot.enable": {
-  "*": false,
-  "plaintext": false,
-  "markdown": false,
-  "scminput": false,
-  "astro": false
-}
-}
 
+  // * for toggling sidebar options
+  "multiCommand.commands": [
+    {
+      "command": "multiCommand.toggleExplorer",
+      "sequence": [
+        {
+          "command": "workbench.view.explorer",
+          "args": {
+            "toggle": true,
+          },
+        },
+      ],
+    },
+  ],
+  "notebook.lineNumbers": "on",
+  "github.copilot.chat.anthropic.tools.websearch.enabled": true,
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "chat.viewSessions.orientation": "stacked",
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "astro": false,
+  },
+  "css.lint.unknownAtRules": "ignore",
+}
