@@ -38,7 +38,7 @@ usage() {
   echo "  push  deploy from repo → ~/.config  (install)"
   echo "  pull  harvest from ~/.config → repo  (save)"
   echo ""
-  echo "  apps: fuzzel waybar foot niri tmux vscode"
+  echo "  apps: fuzzel waybar foot niri tmux vscode mako"
   echo ""
   echo "  options:"
   echo "    -n    dry run (print what would be copied, no changes)"
@@ -167,6 +167,10 @@ push_vscode() {
   cp_glob "$REPO_DIR/vscode/snippets/*" "$CONFIG/Code/User/snippets"
 }
 
+push_mako() {
+  log "push mako"
+  cp_file "$REPO_DIR/mako/config" "$CONFIG/mako/config"
+}
 # --- pull: system → repo ---
 
 pull_fuzzel() {
@@ -205,6 +209,11 @@ pull_vscode() {
   cp_file "$CONFIG/Code/User/mcp.json" "$REPO_DIR/vscode/mcp.json"
   cp_glob "$CONFIG/Code/User/snippets/*" "$REPO_DIR/vscode/snippets"
 }
+
+pull_mako() {
+  log "pull mako"
+  cp_file "$CONFIG/mako/config" "$REPO_DIR/mako/config"
+}
 # --- dispatch ---
 
 run_app() {
@@ -228,6 +237,7 @@ run_app() {
   niri) ${dir}_niri ;;
   tmux) ${dir}_tmux ;;
   vscode) ${dir}_vscode ;;
+  mako) ${dir}_mako ;;
   all)
     if ! $DRY_RUN && ! $YES; then
       read -r -p "${dir} all dotfiles? [y/N] " confirm
@@ -242,6 +252,7 @@ run_app() {
     ${dir}_niri
     ${dir}_tmux
     ${dir}_vscode
+    ${dir}_mako
     ;;
   *) usage ;;
   esac

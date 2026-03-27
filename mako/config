@@ -1,0 +1,56 @@
+# ~/.config/mako/config
+# Catppuccin Mocha theme — matches foot terminal
+# Layout
+anchor=top-right
+layer=overlay
+margin=12
+padding=10,14
+width=380
+height=110
+max-visible=5
+max-history=20
+sort=-time
+# Auto-dismiss
+default-timeout=1500
+ignore-timeout=0
+# Typography
+font=monospace:weight=normal:size=8
+markup=1
+actions=1
+format=<b>%s</b>\n%b
+# Colors — Catppuccin Mocha
+background-color=#1e1e2eee
+text-color=#cdd6f4ff
+border-color=#89b4faff
+border-size=2
+border-radius=8
+# Icons
+icons=1
+max-icon-size=32
+# Mouse bindings
+on-button-left=dismiss
+on-button-middle=dismiss-all
+on-button-right=exec makoctl menu -n "${id}"
+# Urgency: low
+[urgency=low]
+background-color=#1e1e2eee
+text-color=#a6adc8ff
+border-color=#a6e3a1ff
+default-timeout=1000
+# Urgency: normal
+[urgency=normal]
+background-color=#1e1e2eee
+text-color=#cdd6f4ff
+border-color=#89b4faff
+default-timeout=1500
+# Urgency: critical
+[urgency=critical]
+background-color=#181825ff
+text-color=#cdd6f4ff
+border-color=#f38ba8ff
+border-size=3
+default-timeout=3000
+ignore-timeout=1
+# Do Not Disturb
+[mode=do-not-disturb]
+invisible=1
